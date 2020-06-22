@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "nodemon index.js",
+    "start" : "node index.js",
+    "test": "jest --watch --verbose"
   },
   "repository": {
     "type": "git",
@@ -16,5 +18,20 @@
   "bugs": {
     "url": "https://github.com/Build-Week-Expat-Journal-4-Tim/Backend/issues"
   },
-  "homepage": "https://github.com/Build-Week-Expat-Journal-4-Tim/Backend#readme"
+  "homepage": "https://github.com/Build-Week-Expat-Journal-4-Tim/Backend#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.0",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "helmet": "^3.23.1",
+    "jsonwebtoken": "^8.5.1",
+    "knex": "^0.21.1",
+    "sqlite3": "^4.2.0"
+  },
+  "devDependencies": {
+    "jest": "^26.0.1",
+    "nodemon": "^2.0.4",
+    "supertest": "^4.0.2"
+  }
 }
