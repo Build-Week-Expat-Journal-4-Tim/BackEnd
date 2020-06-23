@@ -26,9 +26,9 @@ router.post('/login', (req, res, next) => {
 
   Users.getBy({email})
   .then(user => {
-    if(user ){
+    if(user || bcrypt.compareSync(password, user.password)){
       const token = genToken(user);
-      res.status(200).json({message: `Welcome, ${user.firstName}!`, email: user.email, token: token})
+      res.status(200).json({message: `Welcome, ${user.firstName}!`, user, token: token})
     } else {
       res.status(401).json(`Uhhh...wrong info. You are being deleted...jk!`)
     }
@@ -38,6 +38,18 @@ router.post('/login', (req, res, next) => {
     res.status(500).json(`Oops, something went wrong.`)
   });
 });
+
+router.get('/logout', (req, res) => {
+  if (req.session) {
+      req.session.destroy(error => {
+          if(error) {
+              res.status(500).json({errorMessage: "Failed to logout"})
+          } else {
+              res.status(200).json({successMessage: "Yippie!! You're FREEE!!!"})
+          }
+      });
+  }
+})
 
 
 function genToken(user){
