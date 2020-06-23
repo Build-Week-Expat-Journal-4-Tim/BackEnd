@@ -18,7 +18,8 @@ router.get("/:id", validPostId, (req, res) => {
   res.status(200).json(req.post);
 });
 
-router.post("/", validLogIn, (req, res) => {
+router.post("/", (req, res) => {
+  // validLogIn,
     const post = req.body;
   post.user_id = req.token.userid;
   post.date = new Date().toDateString()
@@ -33,7 +34,8 @@ router.post("/", validLogIn, (req, res) => {
 });
 
 
-router.put("/:id", validPostId, validLogIn, validUserEditPost, (req, res) => {
+router.put("/:id", validPostId, (req, res) => {
+  //after validLogIn, validUserEditPost,
  Posts.update(Number(req.params.id), req.body)
     .then((post) => {
       if (post === 1) {
@@ -48,7 +50,8 @@ router.put("/:id", validPostId, validLogIn, validUserEditPost, (req, res) => {
 });
 
 
-router.delete("/:id", validPostId, validLogIn, validUserEditPost, (req, res) => {
+router.delete("/:id", validPostId,  (req, res) => {
+  //after validLogIn, validUserEditPost,
   Posts.remove(Number(req.params.id))
     .then((result) => {
       if (result === 1) {
