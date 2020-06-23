@@ -21,7 +21,7 @@ router.get("/:id", validPostId, (req, res) => {
 router.post("/", (req, res) => {
   // validLogIn,
     const post = req.body;
-  post.user_id = req.token.userid;
+  // post.user_id = req.token.userid;
   post.date = new Date().toDateString()
     Posts.insert(post)
       .then((post) => {
