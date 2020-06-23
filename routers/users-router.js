@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
 })
 })
 
-router.get("/:id", validLogIn, validUserEditSelf,(req, res) => {
+router.get("/:id", validLogIn, (req, res) => {
   Users.getById(req.params.id)
     .then((user) => {
       if (!user) {
