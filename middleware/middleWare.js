@@ -26,7 +26,7 @@ const validLogIn = (req, res, next) => {
   if (token) {
     jwt.verify(token, secrets.jwtSecret, (error, decodedToken) => {
       if (error) {
-        return res.status(401).json(`You are not authorized.`);
+        return res.status(400).json(`You are not authorized.`);
       } else {
         req.decodedJwt = decodedToken;
         console.log(req.decodedJwt);
