@@ -1,7 +1,7 @@
 const express = require("express");
+const router = express.Router();
 const Users = require("../middleware/users-model");
 const bcrypt = require("bcryptjs");
-const router = express.Router();
 const jwt = require("jsonwebtoken");
 const secrets = require("../database/secrets");
 
@@ -28,7 +28,7 @@ router.post('/login', (req, res, next) => {
   .then(user => {
     if(user || bcrypt.compareSync(password, user.password)){
       const token = genToken(user);
-      res.status(200).json({message: `Welcome, ${user.firstName}!`, userlog, token: token})
+      res.status(200).json({message: `Welcome, ${user.firstName}!`, user, token: token})
     } else {
       res.status(401).json(`Uhhh...wrong info. You are being deleted...jk!`)
     }
@@ -54,7 +54,7 @@ router.get('/logout', (req, res) => {
 
 function genToken(user){
   const payload = {
-    userid: user.id,
+    user_id: user.id,
     firstName: user.firstName,
     email: user.email
   };

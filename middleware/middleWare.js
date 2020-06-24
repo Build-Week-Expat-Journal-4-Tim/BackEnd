@@ -21,15 +21,16 @@ const validPostId = (req, res, next) => {
 }
 
 const validLogIn = (req, res, next) => {
-  const token = req.headers.authorization;
+  const authHeader = req.headers.authorization;
 
-  if (token) {
-    jwt.verify(token, secrets.jwtSecret, (error, decodedToken) => {
+  if (authHeader) {
+    const authToken = authHeader.split(" ")[1];
+    jwt.verify(authToken, secrets.jwtSecret, (error, token) => {
       if (error) {
         return res.status(400).json(`You are not authorized.`);
       } else {
-        req.decodedJwt = decodedToken;
-        console.log(req.decodedJwt);
+        req.token = token;
+        console.log(req.token);
         next();
       }
     });
@@ -39,15 +40,15 @@ const validLogIn = (req, res, next) => {
 }
 
 const validUserEditPost = (req, res, next) => {
-  if (req.token.userid !== req.post.user_id) {
-    return res.status(403).json(`Sorry, wrong user.`);
+  if (req.token.user_id !== req.post.user_id) {
+    return res.status(404).json(`Sorry, wrong user.`);
   }
   next();
 };
 
 const validUserEditSelf = (req, res, next) => {
-  if (req.token.userid !== Number(req.params.id)) {
-    return res.status(403).json(`Sorry, You can't edit this.`);
+  if (req.token.user_id !== Number(req.params.id)) {
+    return res.status(400).json(`Sorry, You can't edit this.`);
   }
   next();
 };

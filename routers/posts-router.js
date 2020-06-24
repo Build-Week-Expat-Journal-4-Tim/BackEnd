@@ -18,10 +18,10 @@ router.get("/:id", validPostId, (req, res) => {
   res.status(200).json(req.post);
 });
 
-router.post("/", (req, res) => {
+router.post("/", validLogIn, (req, res) => {
   // validLogIn,
     const post = req.body;
-  // post.user_id = req.token.userid;
+  post.user_id = req.token.user_id;
   post.date = new Date().toDateString()
     Posts.insert(post)
       .then((post) => {
@@ -34,7 +34,7 @@ router.post("/", (req, res) => {
 });
 
 
-router.put("/:id", validPostId, (req, res) => {
+router.put("/:id", validPostId, validLogIn, validUserEditPost, (req, res) => {
   //after validLogIn, validUserEditPost,
  Posts.update(Number(req.params.id), req.body)
     .then((post) => {
@@ -50,7 +50,7 @@ router.put("/:id", validPostId, (req, res) => {
 });
 
 
-router.delete("/:id", validPostId,  (req, res) => {
+router.delete("/:id", validPostId, validLogIn, validUserEditPost,  (req, res) => {
   //after validLogIn, validUserEditPost,
   Posts.remove(Number(req.params.id))
     .then((result) => {
