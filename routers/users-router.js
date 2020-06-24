@@ -1,7 +1,7 @@
 const express = require("express")
 const router = express.Router();
 const Users = require("../middleware/users-model");
-const {validLogIn, validUserEditSelf} = require("../middleware/middleWare")
+
 router.use(express.json());
 
 router.get('/', (req, res) => {
@@ -18,8 +18,7 @@ router.get('/', (req, res) => {
 })
 })
 
-router.get("/:id", validLogIn, validUserEditSelf, (req, res) => {
-  // validLogIn, validUserEditSelf,
+router.get("/:id", (req, res) => {
   Users.getById(req.params.id)
     .then((user) => {
       if (!user) {
@@ -32,6 +31,16 @@ router.get("/:id", validLogIn, validUserEditSelf, (req, res) => {
       res.status(500).json(`Oops, something went wrong. ${error}`)
     );
 });
+
+router.get("/:id/posts", (req, res) => {
+  Users.getUserPosts(req.params.id)
+  .then(posts => {
+    res.status(200).json(posts)
+  })
+  .catch((error) =>
+      res.status(500).json(`Oops, something went wrong. ${error}`)
+    );
+})
 
 router.delete("/:id", (req, res) => {
   Users.remove(req.params.id)

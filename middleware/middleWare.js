@@ -22,40 +22,22 @@ const validPostId = (req, res, next) => {
 
 const validLogIn = (req, res, next) => {
   const authHeader = req.headers.authorization;
-
   if (authHeader) {
     const authToken = authHeader.split(" ")[1];
-    jwt.verify(authToken, secrets.jwtSecret, (error, token) => {
-      if (error) {
-        return res.status(400).json(`You are not authorized.`);
-      } else {
-        req.token = token;
-        console.log(req.token);
-        next();
+    jwt.verify(authToken, secrets.jwtSecret, (err, token) => {
+      if (err) {
+        return res.status(404).json(`You are not authorized`);
       }
+      req.token = token;
+      next();
     });
   } else {
-    res.status(500).json(`Oops, something went wrong.`);
+    res.status(400).json(`Sorry something went wrong.`);
   }
 }
 
-const validUserEditPost = (req, res, next) => {
-  if (req.token.user_id !== req.post.user_id) {
-    return res.status(404).json(`Sorry, wrong user.`);
-  }
-  next();
-};
-
-const validUserEditSelf = (req, res, next) => {
-  if (req.token.user_id !== Number(req.params.id)) {
-    return res.status(400).json(`Sorry, You can't edit this.`);
-  }
-  next();
-};
 
 module.exports = {
   validPostId,
   validLogIn,
-  validUserEditSelf,
-  validUserEditPost
 }

@@ -7,12 +7,12 @@ const secrets = require("../database/secrets");
 
 router.post("/register", (req, res) => {
   const user = req.body;
-  const hash = bcrypt.hashSync(user.password, 14);
+  const hash = bcrypt.hashSync(user.password, 12);
   user.password = hash;
   Users.insert(user)
     .then((newUser) => {
       if(newUser) {
-      res.status(201).json(`User ${user.firstName} has been registered!`);
+      res.status(201).json({successMessage: `User ${user.firstName} has been registered!`, user});
     } else {
       res.status(404).json(`Sorry, user not added.`);
     }
@@ -21,14 +21,14 @@ router.post("/register", (req, res) => {
 });
 
 
-router.post('/login', (req, res, next) => {
+router.post('/login', (req, res) => {
   let {email, password} = req.body;
 
   Users.getBy({email})
   .then(user => {
-    if(user || bcrypt.compareSync(password, user.password)){
+    if(user && bcrypt.compareSync(password, user.password)){
       const token = genToken(user);
-      res.status(200).json({message: `Welcome, ${user.firstName}!`, user, token: token})
+      res.status(200).json({message: `Welcome, ${user.firstName}!`, user, token})
     } else {
       res.status(401).json(`Uhhh...wrong info. You are being deleted...jk!`)
     }
@@ -54,8 +54,7 @@ router.get('/logout', (req, res) => {
 
 function genToken(user){
   const payload = {
-    user_id: user.id,
-    firstName: user.firstName,
+    subject: user.id,
     email: user.email
   };
   const options = {expiresIn: '3h'};

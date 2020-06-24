@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const Posts = require("../middleware/posts-model");
-const { validPostId, validLogIn, validUserEditPost } = require("../middleware/middleWare");
+const { validPostId, validLogIn} = require("../middleware/middleWare");
 
 
 router.get("/", (req, res) => {
@@ -18,14 +18,13 @@ router.get("/:id", validPostId, (req, res) => {
   res.status(200).json(req.post);
 });
 
-router.post("/", validLogIn, (req, res) => {
+router.post("/", (req, res) => {
   // validLogIn,
     const post = req.body;
-  post.user_id = req.token.user_id;
   post.date = new Date().toDateString()
     Posts.insert(post)
-      .then((post) => {
-        res.status(201).json( `Congrats! On You're new post!`);
+      .then((newPost) => {
+        res.status(201).json({successMessage: `Congrats! On You're new post!`, post});
       })
       .catch((err) => {
         console.log(err)
@@ -34,12 +33,12 @@ router.post("/", validLogIn, (req, res) => {
 });
 
 
-router.put("/:id", validPostId, validLogIn, validUserEditPost, (req, res) => {
-  //after validLogIn, validUserEditPost,
+router.put("/:id", validPostId, (req, res) => {
+  //after validLogIn
  Posts.update(Number(req.params.id), req.body)
     .then((post) => {
       if (post === 1) {
-        res.status(200).json(`You're post has been updated!`);
+        res.status(200).json({successMessage: `You're post has been updated!`, updatedPost: req.body});
       } else {
         res.status(404).json(`Sorry, post could not be updated.`);
       }
@@ -50,7 +49,7 @@ router.put("/:id", validPostId, validLogIn, validUserEditPost, (req, res) => {
 });
 
 
-router.delete("/:id", validPostId, validLogIn, validUserEditPost,  (req, res) => {
+router.delete("/:id", validPostId, (req, res) => {
   //after validLogIn, validUserEditPost,
   Posts.remove(Number(req.params.id))
     .then((result) => {

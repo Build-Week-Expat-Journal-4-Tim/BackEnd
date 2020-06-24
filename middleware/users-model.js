@@ -10,18 +10,18 @@ module.exports = {
 };
 
 function getUser(){
-  return db('users')
+  return db("users")
 }
 
 function getById(id) {
   return db("users").where({ id }).first();
 }
 
-function getUserPosts(userId) {
+function getUserPosts(id) {
   return db("Posts as p")
     .join("Users as u", "u.id", "p.user_id")
-    .select("p.id", "p.description", "p.username as postedBy", "p.title", "p.location", "p.image", "p.date")
-    .where("p.user_id", userId)
+    .select("p.id", "p.description", "u.firstName as postedBy", "p.title", "p.location", "p.image", "p.date")
+    .where("p.user_id", id)
 }
 
 function insert(user) {
