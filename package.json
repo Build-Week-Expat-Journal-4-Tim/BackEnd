@@ -1,27 +1,26 @@
 {
-  "name": "BackEnd",
+  "name": "Backend",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --watch --verbose",
     "server": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "test": "jest --watch --verbose"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Build-Week-Expat-Journal-4-Tim/BackEnd.git"
+    "url": "git+https://github.com/Build-Week-Expat-Journal-4-Tim/Backend.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/Build-Week-Expat-Journal-4-Tim/BackEnd/issues"
+    "url": "https://github.com/Build-Week-Expat-Journal-4-Tim/Backend/issues"
   },
-  "homepage": "https://github.com/Build-Week-Expat-Journal-4-Tim/BackEnd#readme",
-  
-
+  "homepage": "https://github.com/Build-Week-Expat-Journal-4-Tim/Backend#readme",
   "dependencies": {
+    "bcrypt": "^5.0.0",
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -34,9 +33,5 @@
     "jest": "^26.0.1",
     "nodemon": "^2.0.4",
     "supertest": "^4.0.2"
-  },
-
-  "jest": {
-    "testEnvironment": "node"
   }
 }
