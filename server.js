@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const authorziedRouter = require('./routers/authorized-router');
 const usersRouter = require('./routers/users-router');
 const postsRouter = require('./routers/posts-router');
+const { validLogIn } = require("../middleware/middleWare");
 
 const server = express();
 
@@ -14,6 +15,7 @@ server.use(cors());
 server.use(express.json());
 server.use('/api/auth', authorziedRouter);
 server.use('/api/users', usersRouter);
+//don't forget to add validLogIn, back in!!!!!!!!!
 server.use('/api/posts', postsRouter);
 
 server.get('/', (req, res) => {

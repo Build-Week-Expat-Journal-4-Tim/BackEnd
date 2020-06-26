@@ -21,18 +21,18 @@ const validPostId = (req, res, next) => {
 }
 
 const validLogIn = (req, res, next) => {
-  const authHeader = req.headers.authorization;
-  if (authHeader) {
-    const authToken = authHeader.split(" ")[1];
-    jwt.verify(authToken, secrets.jwtSecret, (err, token) => {
+  const {authorization} = req.headers;
+  if (authorization) {
+    jwt.verify(authorization, secrets.jwtSecret, (err, decodedToken) => {
+      console.log(authorization)
       if (err) {
-        return res.status(404).json(`You are not authorized`);
+        return res.status(400).json(`You are not authorized`);
       }
-      req.token = token;
+      req.user = decodedToken;
       next();
     });
   } else {
-    res.status(400).json(`Sorry something went wrong.`);
+    res.status(500).json(`Sorry something went wrong.`);
   }
 }
 
